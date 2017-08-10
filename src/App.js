@@ -1,3 +1,7 @@
+//TODO update stopMethod
+//various css things
+
+
 import React from "react"
 import "./App.css"
 import animationFunction from "./animationFunction.js"
@@ -22,6 +26,7 @@ export default class Simon extends React.Component {
     this.inputSwitch = this.inputSwitch.bind(this)
     this.strictSwitch = this.strictSwitch.bind(this)
     this.stopMethod = this.stopMethod.bind(this)
+    this.eventFunction = this.eventFunction.bind(this)
     
     
   }
@@ -29,7 +34,24 @@ export default class Simon extends React.Component {
   generateNumber() {
       return Math.floor(Math.random()*4)
   }
+  
+  //add keyboard functionality
+  componentDidMount() {
+    document.addEventListener("keydown",this.eventFunction)
+  }
 
+  eventFunction(event) {
+    var buttonCodes = {
+      "49": "0",
+      "50": "1",
+      "51": "2",
+      "52": "3"
+    }
+    if (buttonCodes.hasOwnProperty(event.keyCode)){
+      this.inputMethod(parseInt(buttonCodes[event.keyCode]))
+    }
+}
+  
 
    //   method which executes in starting new game
   startMethod() {

@@ -23,7 +23,6 @@ export default function animationFunction(element) {
     color = rgbHex(color)
     element.style.backgroundColor = colors[color]
     var audio = new Audio(sounds[color])
-    console.log(audio)
     audio.play()
     setTimeout(function() {
         element.style.backgroundColor = "#" + color
