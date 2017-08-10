@@ -7,6 +7,8 @@ import "./App.css"
 import animationFunction from "./animationFunction.js"
 import ControlPanel from "./ControlPanel.js"
 
+var interval; //interval for animation; defined as a global var since it's used in various methods
+
 export default class Simon extends React.Component {
   constructor(){
     super()
@@ -70,8 +72,11 @@ export default class Simon extends React.Component {
     },()=>{
       this.animationMethod()})
   }
+
+
   //stop the current game
   stopMethod() {
+  clearInterval(interval)
    this.setState({
      numbersToPlay:[],
      started:false,
@@ -88,12 +93,14 @@ export default class Simon extends React.Component {
     })
   }
 
+
   // strict mode on off
   strictSwitch() {
     this.setState({
       strictMode:!this.state.strictMode
     },console.log(this.state.strictMode))
   }
+
 
  //self explanatory
   animationMethod() {
@@ -102,19 +109,19 @@ export default class Simon extends React.Component {
     var references = [this.buttonZero,this.buttonOne,this.buttonTwo,this.buttonThree]
     let temporary = this.state.numbersToPlay
     var count = 0
-    var interval = setInterval(()=>{
+    interval = setInterval(()=>{
         animationFunction(references[temporary[count]])
         count++  
 
          if (count == temporary.length){
             this.inputSwitch()
             clearInterval(interval)
+            console.log(interval)
             this.setState({
              status:this.state.currentIndex + "/" + this.state.counter
             })
           }
     },1000)
-
     }
     
   
@@ -138,12 +145,16 @@ export default class Simon extends React.Component {
       })
   }
 
+
+
  //check if user input is correct
   inputMethod(number) {
     var temporary = this.state.numbersToPlay
     var references = [this.buttonZero,this.buttonOne,this.buttonTwo,this.buttonThree]
     animationFunction(references[number])
-    if (number == temporary[this.state.currentIndex]){ //if correct
+
+
+    if (number == temporary[this.state.currentIndex]){ //if correct number is played
       console.log("correct!")
       this.setState({
         currentIndex:this.state.currentIndex+1,
@@ -156,7 +167,9 @@ export default class Simon extends React.Component {
             this.updateMethod()
           }  
       })
+
     } else { //if incorrect
+        
         if (this.state.strictMode === true){ //if strict mode
           console.log(this.state.strictMode)
           console.log("Strict mode on, starting new game")
@@ -165,6 +178,7 @@ export default class Simon extends React.Component {
             numbersToPlay:[]
           },this.startMethod())
       } 
+
         else { //if normal mode
       this.setState({
         currentIndex:0,
@@ -176,6 +190,9 @@ export default class Simon extends React.Component {
     }
     }
   }
+
+
+ //render function
   render() {
     return(
       <div className = "mainWrap">
