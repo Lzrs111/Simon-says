@@ -1,0 +1,79 @@
+.simonButton {
+  width: 50%;
+  height: 100%;
+  background-color: red;
+  border: 2px solid black;
+}
+
+.screen {
+height:40%;
+width:80%;
+background-color:gray;
+}
+
+.screenAndButtons {
+width:100%;
+height:100%;
+margin-left: 10%;
+margin-top:20%;
+display:inline-block;
+text-align:center;
+}
+
+.controlButtons {
+width: 80%;
+margin-top:5%;
+height:200px;
+
+}
+
+
+.controlButton {
+margin-left:5%;
+margin-right:5%;
+height:20%;
+width:20%;
+border-radius:50%;
+border:none;
+}
+
+
+.buttonWrap {
+  display: inline-block;
+  border-radius: 50%;
+  width:100%;
+  height:100%;
+  border: 5px solid black;
+  overflow: hidden;
+}
+
+.mainWrap {
+  position:relative;
+  width:30%;
+  height:55vh;
+  background-color: transparent;
+  left:35vw;
+}
+
+.simonRow {
+display:block;
+height: 50%;
+width:100%;
+border: solid 10%; 
+}
+
+
+.round {
+position: absolute;
+  border: solid 10px;
+  width: 60%;
+  height:60%;
+  border-radius: 50%;
+  background: white;
+  left: 20%;
+  top:20%;
+  z-index: 100;
+  overflow: hidden;
+}
+
+
