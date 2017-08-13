@@ -1,8 +1,4 @@
 import rgbToHex from "./rgbtohex.js"
-import SimonSound1 from "./simonSound1.mp3"
-import SimonSound2 from "./simonSound2.mp3"
-import SimonSound3 from "./simonSound3.mp3"
-import SimonSound4 from "./simonSound4.mp3"
 
 var rgbHex = rgbToHex //calling the function directly raises an error
 var colors = {
@@ -12,19 +8,32 @@ var colors = {
         "1e3c72":  "#2a52CC" 
     }
 var sounds = {
-        "999900": SimonSound1, 
-        "004600": SimonSound2,
-        "8b0000": SimonSound3, 
-        "1e3c72": SimonSound4
+        "999900": 329.63, 
+        "004600": 261.63,
+        "8b0000": 220, 
+        "1e3c72": 164.81 
         }
 
-export default function animationFunction(element) {
+var audioCont = new AudioContext();
+
+
+export function createOscillator(frequency) {
+    var oscillator = audioCont.createOscillator()
+    oscillator.type = "square"
+    oscillator.frequency.value = frequency 
+    oscillator.connect(audioCont.destination)
+    return oscillator
+}
+
+
+export function animationFunction(element) {
     var color = window.getComputedStyle(element, null).getPropertyValue("background-color").match(/\d{1,3}/g)
     color = rgbHex(color)
     element.style.backgroundColor = colors[color]
-    var audio = new Audio(sounds[color])
-    audio.play()
+    var oscillator = createOscillator(sounds[color])
+    oscillator.start()
     setTimeout(function() {
         element.style.backgroundColor = "#" + color
+        oscillator.stop(0)
     }, 800);
 }
