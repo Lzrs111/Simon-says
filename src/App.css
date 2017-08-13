@@ -1,3 +1,5 @@
+@import url("http://fonts.googleapis.com/css?family=Orbitron");
+
 .simonButton {
   width: 50%;
   height: 100%;
@@ -8,14 +10,22 @@
 .screen {
 height:40%;
 width:80%;
-background-color:gray;
+background-color: #404751;
+}
+
+
+.screenText {
+font-family:Orbitron;
+font-size:200%;
+color: orange;
+margin-top:0;
 }
 
 .screenAndButtons {
 width:100%;
 height:100%;
 margin-left: 10%;
-margin-top:20%;
+margin-top:22.5%;
 display:inline-block;
 text-align:center;
 }
@@ -50,9 +60,11 @@ border:none;
 .mainWrap {
   position:relative;
   width:30%;
-  height:55vh;
+  height:60vh;
   background-color: transparent;
   left:35vw;
+  top: 10vh;
+  display: inline-block;
 }
 
 .simonRow {
@@ -74,6 +86,35 @@ position: absolute;
   top:20%;
   z-index: 100;
   overflow: hidden;
+}
+
+.strictMode {
+  margin: 0;
+  color:  orange;
+  position:relative;
+  left:30%;
+  font-family:Orbitron;
+}
+
+.color {
+display:inline-block;
+width:20px;
+height:20px;
+}
+
+.infoBoxMain {
+display:inline-block;
+width:20%;
+height:30vh;
+border:solid 5px black;
+position: relative;
+left: 40vw;
+top: 10vh; 
+}
+
+.main {
+  display:inline-block;
+
 }
 
 

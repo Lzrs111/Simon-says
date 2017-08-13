@@ -13,14 +13,16 @@ export default class Simon extends React.Component {
   constructor(){
     super()
     this.state = {
-      strictMode:false,
-      userInput:false,
-      numbersToPlay:[],
-      currentIndex: 0,
+      strictMode:false, //strict mode
+      userInput:false, //input
+      numbersToPlay:[], //array of numbers which need to be played
+      currentIndex: 0, 
       started: false,
       status:"Press start to play",
       counter:3
       }
+
+    //bind methods to component
     this.generateNumber = this.generateNumber.bind(this)
     this.startMethod = this.startMethod.bind(this)
     this.animationMethod = this.animationMethod.bind(this)
@@ -30,13 +32,15 @@ export default class Simon extends React.Component {
     this.stopMethod = this.stopMethod.bind(this)
     this.eventFunction = this.eventFunction.bind(this)
     
-    
   }
+
+
   //  generate a random number between zero and three
   generateNumber() {
       return Math.floor(Math.random()*4)
   }
   
+
   //add keyboard functionality
   componentDidMount() {
     document.addEventListener("keydown",this.eventFunction)
@@ -70,6 +74,7 @@ export default class Simon extends React.Component {
       started: true ,
       status:this.state.currentIndex + "/" + this.state.counter,
     },()=>{
+      console.log(this.state.numbersToPlay)
       this.animationMethod()})
   }
 
@@ -81,7 +86,9 @@ export default class Simon extends React.Component {
      numbersToPlay:[],
      started:false,
      userInput: false,
-     currentIndex: 0 
+     currentIndex: 0 ,
+     status:"Press start to play",
+     counter:3
    }) 
   }
 
@@ -104,19 +111,19 @@ export default class Simon extends React.Component {
 
  //self explanatory
   animationMethod() {
-    console.log("Animation method!")
-    console.log(this.state.userInput)
     var references = [this.buttonZero,this.buttonOne,this.buttonTwo,this.buttonThree]
     let temporary = this.state.numbersToPlay
     var count = 0
+
+
     interval = setInterval(()=>{
+       console.log(references[temporary[count]])
         animationFunction(references[temporary[count]])
         count++  
 
          if (count == temporary.length){
             this.inputSwitch()
             clearInterval(interval)
-            console.log(interval)
             this.setState({
              status:this.state.currentIndex + "/" + this.state.counter
             })
@@ -171,12 +178,16 @@ export default class Simon extends React.Component {
     } else { //if incorrect
         
         if (this.state.strictMode === true){ //if strict mode
-          console.log(this.state.strictMode)
-          console.log("Strict mode on, starting new game")
+          clearInterval(interval)
           this.setState({
             currentIndex:0,
-            numbersToPlay:[]
-          },this.startMethod())
+            numbersToPlay:[],
+            status:'Strict mode on, starting new game',
+            userInput:false,
+            counter:3
+          },()=>{
+            setTimeout(this.startMethod,1000)
+          })
       } 
 
         else { //if normal mode
@@ -196,27 +207,26 @@ export default class Simon extends React.Component {
   render() {
     return(
       <div className = "mainWrap">
-       <ControlPanel start={this.startMethod} stop={this.stopMethod} started={this.state.started} strict={this.state.strictMode} status={this.state.status}/> 
+       <ControlPanel start={this.startMethod} stop={this.stopMethod} started={this.state.started} strict={this.state.strictMode} status={this.state.status} strictSwitch={this.strictSwitch}/> 
         <div className="buttonWrap">
           <div className="simonRow">
             <button className="simonButton"  onClick = {()=>{this.inputMethod(0)}} ref={(number)=>{
-              this.buttonZero = number}} disabled={!this.state.userInput} style={{backgroundColor: "#999900"}}>
+              this.buttonZero = number}} disabled={!this.state.userInput} style={{backgroundColor: "#999900",borderTop:"none",borderLeft:"none"}}>
             </button> 
 
             <button className="simonButton"  onClick = {()=>{
               this.inputMethod(1)}} ref={(number)=>{
-              this.buttonOne = number}} disabled={!this.state.userInput} style={{backgroundColor: "#004600"}}>
+              this.buttonOne = number}} disabled={!this.state.userInput} style={{backgroundColor: "#004600",borderTop:"none",borderRight:"none"}}>
             </button>
           </div> 
 
-
           <div className="simonRow">
             <button className="simonButton"  onClick = {()=>{this.inputMethod(2)}} ref={(number)=>{
-              this.buttonTwo = number}} disabled={!this.state.userInput} style={{backgroundColor: "#8b0000"}}>
+              this.buttonTwo = number}} disabled={!this.state.userInput} style={{backgroundColor: "#8b0000",borderLeft:"none", borderBottom:"none"}}>
             </button> 
 
             <button className="simonButton"  onClick = {()=>{this.inputMethod(3)}} ref={(number)=>{
-              this.buttonThree = number}} disabled={!this.state.userInput} style={{backgroundColor: "#1e3c72"}}>
+              this.buttonThree = number}} disabled={!this.state.userInput} style={{backgroundColor: "#1e3c72", borderRight:'none'}}>
             </button> 
           </div>  
         </div>
