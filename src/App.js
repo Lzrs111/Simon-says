@@ -21,7 +21,15 @@ export default class Simon extends React.Component {
       started: false,
       status:"Press start to play",
       counter:3,
-      }
+      colors: {
+        "#999900": "#FFFF32",
+        "#004600": "#66FF00",
+        "#8b0000": "#FF0000",
+        "#1e3c72":  "#2a52CC" 
+      },
+      pressed:  0
+    }
+      
 
     //bind methods to component
     this.generateNumber = this.generateNumber.bind(this)
@@ -61,15 +69,14 @@ export default class Simon extends React.Component {
       "51": "2",
       "52": "3"
     }
-    var keyCheck = "test" //allow the user to hold down the key since the keydown event fires continously
+    var keyCheck = event.repeat  //allow the user to hold down the key since the keydown event fires continously
   
-    if (buttonCodes.hasOwnProperty(event.keyCode) && event.type=="keydown" && keyCheck==="test"){
-      keyCheck = false
-      console.log(keyCheck)
-      this.inputMethod(parseInt(buttonCodes[event.keyCode]))
-    } else if (buttonCodes.hasOwnProperty(event.keyCode) && event.type == "keyup") {
-      this.stopAudio()
-      keyCheck = false
+    if (buttonCodes.hasOwnProperty(event.keyCode)&&this.state.userInput==true){
+      if (keyCheck ==false&&event.type =='keydown'){
+        this.inputMethod(parseInt(buttonCodes[event.keyCode]))
+      } else if (event.type =='keyup'){
+        this.stopAudio()
+      }
     }
   }
   //audio methods
@@ -80,10 +87,21 @@ export default class Simon extends React.Component {
     oscillator.start()
   }
 
-  stopAudio() {
-    oscillator.stop(0)
-    oscillator = ""
+  stopAudio(index) {
+    console.log(typeof(oscillator))
+    if (typeof(oscillator) =='object'){
+      oscillator.stop(0)
+      oscillator = ""
+    }
 
+    // check which button is pressed and  set its background color back to initial
+    var references = [this.buttonZero,this.buttonOne,this.buttonTwo,this.buttonThree]
+    var pressed = this.state.pressed
+    var keys = Object.keys(this.state.colors)
+    references[pressed].style.backgroundColor = keys[pressed]
+
+
+    // if user has played the entire sequence correctly stop audio and call update method
     if (this.state.currentIndex ==  this.state.numbersToPlay.length && oscillator ==""){ 
             this.updateMethod()
           }  
@@ -189,7 +207,18 @@ export default class Simon extends React.Component {
   inputMethod(number) {
     var temporary = this.state.numbersToPlay
     var references = [this.buttonZero,this.buttonOne,this.buttonTwo,this.buttonThree]
+    var keys = Object.keys(this.state.colors) 
+    var initialColor = keys[number]
     
+    var element = references[number]
+    console.log(element)
+    element.style.backgroundColor = this.state.colors[initialColor]
+    console.log(this.state.colors[initialColor]) 
+
+    this.setState({
+      pressed:number
+    })
+
 
     if (number == temporary[this.state.currentIndex]){ //if correct number is played
       this.startAudio(number)
@@ -198,7 +227,7 @@ export default class Simon extends React.Component {
       },
         ()=>{
           this.setState({
-           status:this.state.currentIndex + "/" + this.state.counter
+           status:this.state.currentIndex + "/" + this.state.counter,
           })
       })
 
