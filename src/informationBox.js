@@ -11,11 +11,11 @@ export default function InformationBox() {
                   colors.map((value,index)=>{
                     console.log(value)
                     return (
-                         <div>
+                         <div style={{display:"inline-block",marginLeft:"1%"}}>
                              <div  className = 'color' style={{backgroundColor:value}}>
                              </div>
                              <p style={{display:"inline-block"}}>
-                              Keyboard: {index+1}   
+                                &nbsp;Keyboard: {index+1}   
                              </p>
                          </div>
                      )

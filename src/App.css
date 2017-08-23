@@ -3,7 +3,6 @@
 .simonButton {
   width: 50%;
   height: 100%;
-  background-color: red;
   border: 2px solid black;
 }
 
@@ -59,7 +58,7 @@ border:none;
 
 .mainWrap {
   position:relative;
-  width:30%;
+  width:35%;
   height:60vh;
   background-color: transparent;
   left:35vw;
@@ -103,13 +102,9 @@ height:20px;
 }
 
 .infoBoxMain {
-display:inline-block;
-width:20%;
-height:30vh;
-border:solid 5px black;
-position: relative;
-left: 40vw;
-top: 10vh; 
+display: block;
+margin-top: 10%;
+margin-left: 40%
 }
 
 .main {

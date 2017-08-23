@@ -87,7 +87,7 @@ export default class Simon extends React.Component {
     oscillator.start()
   }
 
-  stopAudio(index) {
+  stopAudio(end) {
     console.log(typeof(oscillator))
     if (typeof(oscillator) =='object'){
       oscillator.stop(0)
@@ -102,11 +102,10 @@ export default class Simon extends React.Component {
 
 
     // if user has played the entire sequence correctly stop audio and call update method
-    if (this.state.currentIndex ==  this.state.numbersToPlay.length && oscillator ==""){ 
-            this.updateMethod()
-          }  
+      if (this.state.numbersToPlay.length > 0 && this.state.currentIndex ==  this.state.numbersToPlay.length && oscillator ==""){ 
+              this.updateMethod()
+            }
   }
-  
 
    //   method which executes in starting new game
   startMethod() {
@@ -211,9 +210,7 @@ export default class Simon extends React.Component {
     var initialColor = keys[number]
     
     var element = references[number]
-    console.log(element)
     element.style.backgroundColor = this.state.colors[initialColor]
-    console.log(this.state.colors[initialColor]) 
 
     this.setState({
       pressed:number
@@ -234,6 +231,7 @@ export default class Simon extends React.Component {
     } else { //if incorrect
         
         if (this.state.strictMode === true){ //if strict mode
+          this.startAudio(4)
           clearInterval(interval)
           this.setState({
             currentIndex:0,
@@ -242,13 +240,15 @@ export default class Simon extends React.Component {
             userInput:false,
             counter:3
           },()=>{
-            setTimeout(this.startMethod,1000)
+            setTimeout(()=> {
+              this.stopAudio()
+              this.startMethod()
+            },1000)
           })
       } 
 
         else { //if normal mode
           this.startAudio(4)
-
           this.setState({
             currentIndex:0,
             status: "Incorrect, try again",
@@ -271,23 +271,19 @@ export default class Simon extends React.Component {
        <ControlPanel start={this.startMethod} stop={this.stopMethod} started={this.state.started} strict={this.state.strictMode} status={this.state.status} strictSwitch={this.strictSwitch}/> 
         <div className="buttonWrap">
           <div className="simonRow">
-            <button className="simonButton"  onMouseDown = {()=>{this.inputMethod(0)}} ref={(number)=>{
+            <button className="simonButton" onMouseDown = {()=>{this.inputMethod(0)}} ref={(number)=>{
               this.buttonZero = number}} disabled={!this.state.userInput} style={{backgroundColor: "#999900",borderTop:"none",borderLeft:"none"}}>
             </button> 
-
-            <button className="simonButton"  onMouseDown = {()=>{
+            <button className="simonButton" onMouseDown = {()=>{
               this.inputMethod(1)}} ref={(number)=>{
               this.buttonOne = number}} disabled={!this.state.userInput} style={{backgroundColor: "#004600",borderTop:"none",borderRight:"none"}}>
             </button>
           </div> 
-
           <div className="simonRow">
-            <button className="simonButton"  onMouseDown = {()=>{this.inputMethod(2)}} ref={(number)=>{
-              this.buttonTwo = number}} disabled={!this.state.userInput} style={{backgroundColor: "#8b0000",borderLeft:"none", borderBottom:"none"}}>
-            </button> 
-
-            <button className="simonButton"  onMouseDown = {()=>{this.inputMethod(3)}} ref={(number)=>{
-              this.buttonThree = number}} disabled={!this.state.userInput} style={{backgroundColor: "#1e3c72", borderRight:'none'}}>
+            <button className="simonButton" onMouseDown = {()=>{this.inputMethod(2)}} ref={(number)=>{
+              this.buttonTwo = number}} disabled={!this.state.userInput} style={{backgroundColor: "#8b0000",borderLeft:"none", borderBottom:"none"}}></button> 
+            <button className="simonButton" onMouseDown = {()=>{this.inputMethod(3)}} ref={(number)=>{
+              this.buttonThree = number}} disabled={!this.state.userInput} style={{backgroundColor: "#1e3c72", borderRight:'none',borderTop: "10% solid black"}}>
             </button> 
           </div>  
         </div>

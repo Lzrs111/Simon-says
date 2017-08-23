@@ -4,11 +4,9 @@ import InformationBox from "./informationBox.js"
 
 export default function Main() {
     return (
-        <div  className = 'main'>
-            <div>
+        <div className="container-fluid">
             <App/>
             <InformationBox/>
-            </div>
         </div>
     )    
 
